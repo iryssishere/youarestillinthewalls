@@ -1,319 +1,536 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>I Regretted It</title>
 
   <style>
-    :root{
-      --max-width:900px;
-      --ui-pad:20px;
-      --textbox-b;g: rgba(0,0,0,0.65);
-      --textbox-color:#fff;
-      --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    :root {
+      --max-width: 900px;
+      --ui-pad: 20px;
+      --textbox-bg: rgba(0, 0, 0, 0.8);
+      --textbox-color: #ffffff;
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
-    html,body{
-      margin:0;
-      heicase 7:
-setRightSprite("");
-      typeText("Why Are You Looking?
-");
-      break;
-
-case 8:
-setLeftSprite("");
-setRightSprite("null");
-      typeText("Why Are You Looking?");
-      break;
-
-case 9:
-setLeftSprite("null");
-setRightSprite("");
-      typeText("Why Are You Looking?");
-      break;
-
-case 10:
-      typeText("Why Are You Looking?");
-      break;
-
-case 11:
-setLeftSprite("");
-setRightSprite("null");
-typeText("Why Are You Looking?")
-      break;
-
-case 12:
-setLeftSprite("null");
-setRightSprite("");
-      typeText("Why Are You Looking?");
-      break;
-
-case 13:
-   showChoices([
-        { text:"(Change Topic)", onSelect:()=>{scene=14; runScene();} },
-        { text:"Introduce Yourself", onSelect:()=>{scene=10; runScene();} }
-      ]);
-      typeText("...");
-      break;
-
-case 14:
-setLeftSprite("");
-setRightSprite("null");
-      typeText("Why Are You Looking?");
-      break;
-
-case 15:
-      showChoices([
-      typeText("Why Are You Looking?")
-      break;ght:100%;
-      background:#000;
-      font-family:var(--font);
-      color:var(--textbox-color);
+    * {
+      box-sizing: border-box;
     }
 
-    .wrap{
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:24px;
-      box-sizing:border-box;
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #000;
+      font-family: var(--font);
+      color: var(--textbox-color);
     }
 
-    #game{
-      width:100%;
-      max-width:var(--max-width);
-      display:flex;
-      flex-direction:column;
-      gap:12px;
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
-    #stage{
-      position:relative;
-      width:100%;
-      aspect-ratio:16/9;
-      background:#111;
-      overflow:hidden;
-      border-radius:12px;
+    #game {
+      width: 100%;
+      max-width: var(--max-width);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    #background{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
+    #stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #080808;
+      overflow: hidden;
+      border: 1px solid #222;
     }
 
-    .sprite{
-      position:absolute;
-      bottom:0;
-      max-height:100%;
-      transition:opacity .3s;
-      pointer-events:none;
+    #background {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .left{ left:2%; }
-    .right{ right:2%; }
-    .hidden{ opacity:0; }
-
-    #textbox{
-      background:var(--textbox-bg);
-      padding:var(--ui-pad);
-      border-radius:12px;
-      font-size:20px;
-      min-height:80px;
-      cursor:pointer;
+    .sprite {
+      position: absolute;
+      bottom: 0;
+      max-height: 100%;
+      max-width: 48%;
+      object-fit: contain;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
     }
 
-    .caret{
-      display:inline-block;
-      width:10px;
-      height:1.1em;
-      background:#fff;
-      margin-left:6px;
-      animation:blink 1s steps(1) infinite;
+    .left {
+      left: 2%;
     }
 
-    @keyframes blink{50%{opacity:0}}
-
-    #choices{
-      display:none;
-      flex-direction:column;
-      gap:8px;
+    .right {
+      right: 2%;
     }
 
-    .choice{
-      background:#fff;
-      color:#000;
-      padding:12px;
-      border-radius:10px;
-      text-align:center;
-      cursor:pointer;
+    .hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #textbox {
+      background: var(--textbox-bg);
+      padding: var(--ui-pad);
+      border: 1px solid #333;
+      min-height: 110px;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .caret {
+      display: inline-block;
+      width: 8px;
+      height: 1.1em;
+      margin-left: 5px;
+      background: #fff;
+      vertical-align: text-bottom;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    #continueHint {
+      color: #777;
+      font-size: 11px;
+      text-align: right;
+      letter-spacing: 2px;
+      padding-right: 4px;
+    }
+
+    #choices {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .choice {
+      width: 100%;
+      padding: 14px;
+      background: #111;
+      color: #fff;
+      border: 1px solid #444;
+      font-family: inherit;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .choice:hover {
+      background: #292929;
+    }
+
+    @media (max-width: 600px) {
+      .wrap {
+        padding: 12px;
+      }
+
+      #textbox {
+        padding: 16px;
+        min-height: 100px;
+        font-size: 16px;
+      }
+
+      #stage {
+        aspect-ratio: 4 / 3;
+      }
     }
   </style>
 </head>
 
 <body>
+
 <div class="wrap">
-  <div id="game">
+  <main id="game">
 
     <div id="stage">
-      <img id="background" src="" />
-      <img id="spriteLeft" class="sprite left hidden"
-        src="" />
-      <img id="spriteRight" class="sprite right hidden"
-        src="" />
+      <img
+        id="background"
+        src=""
+        alt="Scene background"
+      >
+
+      <img
+        id="spriteLeft"
+        class="sprite left hidden"
+        src=""
+        alt=""
+      >
+
+      <img
+        id="spriteRight"
+        class="sprite right hidden"
+        src=""
+        alt=""
+      >
     </div>
 
-    <div id="textbox"></div>
+    <div
+      id="textbox"
+      role="button"
+      tabindex="0"
+      aria-label="Dialogue. Tap to continue."
+    >
+      <span id="dialogue"></span>
+    </div>
+
+    <div id="continueHint">TAP TO CONTINUE</div>
+
     <div id="choices"></div>
 
-  </div>
+  </main>
 </div>
 
 <script>
-/* ===== ELEMENTS ===== */
-const textbox = document.getElementById('textbox');
-const choicesBox = document.getElementById('choices');
-const bg = document.getElementById('background');
-const leftSprite = document.getElementById('spriteLeft');
-const rightSprite = document.getElementById('spriteRight');
 
-/* ===== STATE ===== */
+/* =========================
+   ELEMENTS
+========================= */
+
+const textbox = document.getElementById("textbox");
+const dialogue = document.getElementById("dialogue");
+const choicesBox = document.getElementById("choices");
+const continueHint = document.getElementById("continueHint");
+
+const bg = document.getElementById("background");
+const leftSprite = document.getElementById("spriteLeft");
+const rightSprite = document.getElementById("spriteRight");
+
+
+/* =========================
+   STATE
+========================= */
+
+let scene = 0;
 let typing = false;
 let readyForNext = false;
 let currentText = "";
 let timer = null;
+
 const speed = 28;
 
-/* ===== ENGINE ===== */
-function setBackground(src){ bg.src = src || ""; }
 
-function setLeftSprite(src){
-  if(src){ leftSprite.src = src; leftSprite.classList.remove('hidden'); }
-  else leftSprite.classList.add('hidden');
+/* =========================
+   BACKGROUND
+========================= */
+
+function setBackground(src) {
+  bg.src = src || "";
 }
 
-function setRightSprite(src){
-  if(src){ rightSprite.src = src; rightSprite.classList.remove('hidden'); }
-  else rightSprite.classList.add('hidden');
+
+/* =========================
+   CHARACTER SPRITES
+========================= */
+
+function setLeftSprite(src) {
+  if (src) {
+    leftSprite.src = src;
+    leftSprite.classList.remove("hidden");
+  } else {
+    leftSprite.classList.add("hidden");
+    leftSprite.removeAttribute("src");
+  }
 }
 
-function clearChoices(){
-  choicesBox.innerHTML="";
-  choicesBox.style.display="none";
+function setRightSprite(src) {
+  if (src) {
+    rightSprite.src = src;
+    rightSprite.classList.remove("hidden");
+  } else {
+    rightSprite.classList.add("hidden");
+    rightSprite.removeAttribute("src");
+  }
 }
 
-function showChoices(list){
+
+/* =========================
+   CHOICES
+========================= */
+
+function clearChoices() {
+  choicesBox.innerHTML = "";
+  choicesBox.style.display = "none";
+}
+
+function showChoices(list) {
   clearChoices();
-  choicesBox.style.display="flex";
-  list.forEach(c=>{
-    const btn=document.createElement('div');
-    btn.className='choice';
-    btn.textContent=c.text;
-    btn.onclick=c.onSelect;
-    choicesBox.appendChild(btn);
+
+  choicesBox.style.display = "flex";
+  continueHint.style.display = "none";
+
+  list.forEach(choice => {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "choice";
+    button.textContent = choice.text;
+
+    button.addEventListener("click", () => {
+      choice.onSelect();
+    });
+
+    choicesBox.appendChild(button);
   });
 }
 
-function typeText(text){
+
+/* =========================
+   TYPING ANIMATION
+========================= */
+
+function typeText(text) {
+  clearInterval(timer);
+
   typing = true;
   readyForNext = false;
   currentText = text;
-  textbox.innerHTML = "";
 
-  const span = document.createElement('span');
-  const caret = document.createElement('span');
+  dialogue.textContent = "";
+
+  const textNode = document.createTextNode("");
+  const caret = document.createElement("span");
+
   caret.className = "caret";
-  textbox.append(span, caret);
+
+  dialogue.appendChild(textNode);
+  dialogue.appendChild(caret);
 
   let i = 0;
-  clearInterval(timer);
-  timer = setInterval(()=>{
-    span.textContent += text[i] || "";
-    i++;
-    if(i >= text.length){
+
+  timer = setInterval(() => {
+    if (i < currentText.length) {
+      textNode.textContent += currentText[i];
+      i++;
+    }
+
+    if (i >= currentText.length) {
       clearInterval(timer);
+      timer = null;
+
       typing = false;
-      span.textContent = text;
       readyForNext = true;
+
+      caret.remove();
     }
   }, speed);
 }
 
-function skipTyping(){
-  if(!typing) return;
+
+/* =========================
+   SKIP TYPING
+========================= */
+
+function skipTyping() {
+  if (!typing) return;
+
   clearInterval(timer);
+  timer = null;
+
   typing = false;
-  textbox.innerHTML = currentText + '<span class="caret"></span>';
+
+  dialogue.textContent = currentText;
+
   readyForNext = true;
 }
 
-/* ===== TAP LOGIC ===== */
-textbox.onclick = () => {
-  if(typing){
+
+/* =========================
+   INPUT
+========================= */
+
+function advanceDialogue() {
+  if (typing) {
     skipTyping();
     return;
   }
-  if(readyForNext && choicesBox.style.display !== "flex"){
-    readyForNext = false;
-    nextScene();
+
+  if (!readyForNext) return;
+
+  if (choicesBox.style.display === "flex") return;
+
+  readyForNext = false;
+
+  nextScene();
+}
+
+textbox.addEventListener("click", advanceDialogue);
+
+textbox.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    advanceDialogue();
   }
-};
+});
 
-/* ===== STORY ===== */
-let scene = 0;
 
-function nextScene(){
+/* =========================
+   SCENE CONTROL
+========================= */
+
+function nextScene() {
   scene++;
   runScene();
 }
 
-function runScene(){
+function runScene() {
+  clearInterval(timer);
+  timer = null;
+
   clearChoices();
 
-  switch(scene){
+  typing = false;
+  readyForNext = false;
+
+  continueHint.style.display = "block";
+
+  switch (scene) {
+
+    /* SCENE 1 */
+
     case 0:
-      setBackground("https://imgur.com/a/hYgrAJB");
+
+      setBackground(
+        "https://i.postimg.cc/BQQ27NGX/IMG-20251120-202850-229.jpg"
+      );
+
       setLeftSprite(null);
       setRightSprite(null);
-      typeText("Their idea of love will never be genuine");
-      break;
 
-case 1:
-      typeText("They will also never truly understand");
-      break;
+      typeText(
+        "Their idea of love will never be genuine."
+      );
 
-case 2:
-      typeText("I wanted to be the only one, I had to be the only one, No one should be able to");
-      break;
-
-case 3:
-      typeText("But you were impure and you made yourself into being deemed a rotten");
-      break;
-
-case 4:
-      typeText("I still saved you, Even when you were constantly trying to be, It was not my fault");
-      break;
-
-case 5:
-   typeText("The grief still haunts this day; I regretted everything");
-   break;
-
-case 6:
-setBackground("https://i.postimg.cc/d18B21KF/IMG-20251118-191115-188.webp");
-      typeText("You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls You will forever be in the walls 6 JULY 2025");
       break;
 
 
+    /* SCENE 2 */
+
+    case 1:
+
+      typeText(
+        "They will also never truly understand."
+      );
+
+      break;
+
+
+    /* SCENE 3 */
+
+    case 2:
+
+      typeText(
+        "I wanted to be the only one. " +
+        "I had to be the only one. " +
+        "No one should be able to."
+      );
+
+      break;
+
+
+    /* SCENE 4 */
+
+    case 3:
+
+      typeText(
+        "But you were impure, and you made yourself " +
+        "into something deemed rotten."
+      );
+
+      break;
+
+
+    /* SCENE 5 */
+
+    case 4:
+
+      typeText(
+        "I still saved you, even when you were " +
+        "constantly trying to be. " +
+        "It was not my fault."
+      );
+
+      break;
+
+
+    /* SCENE 6 */
+
+    case 5:
+
+      typeText(
+        "The grief still haunts me to this day. " +
+        "I regretted everything."
+      );
+
+      break;
+
+
+    /* FINAL SCENE */
+
+    case 6:
+
+      setBackground(
+        "https://i.postimg.cc/d18B21KF/IMG-20251118-191115-188.webp"
+      );
+
+      typeText(
+        "You will forever be in the walls. ".repeat(20) +
+        "6 JULY 2025"
+      );
+
+      break;
+
+
+    /* END */
+
+    default:
+
+      clearInterval(timer);
+      timer = null;
+
+      typing = false;
+      readyForNext = false;
+
+      setLeftSprite(null);
+      setRightSprite(null);
+
+      continueHint.style.display = "none";
+
+      dialogue.textContent = "The End.";
+
+      break;
   }
 }
 
-/* START */
+
+/* =========================
+   START GAME
+========================= */
+
 runScene();
+
 </script>
+
 </body>
 </html>
